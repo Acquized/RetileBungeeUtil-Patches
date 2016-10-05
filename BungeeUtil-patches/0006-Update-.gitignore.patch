@@ -1,0 +1,22 @@
+From 3ba5f01ec31ecb9e9a9761a0104b238bfda7623d Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Wed, 5 Oct 2016 11:52:08 +0200
+Subject: [PATCH] [Misc] Update .gitignore
+
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.gitignore b/.gitignore
+index cc9d563..4ab605c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -33,3 +33,4 @@ gradle-app.setting
+ # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+ # gradle/wrapper/gradle-wrapper.properties
+ 
++patches
+\ No newline at end of file
+-- 
+1.9.4.msysgit.2
+
