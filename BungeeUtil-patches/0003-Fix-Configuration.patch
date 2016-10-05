@@ -1,0 +1,164 @@
+From 88624bd832cd6c4bee9aa638d55024bb44aead61 Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Wed, 5 Oct 2016 11:15:58 +0200
+Subject: [PATCH] [Fix] Fix Configuration
+
+---
+ .../BungeeUtil/configuration/Configuration.java    | 87 ++++++++--------------
+ 1 file changed, 31 insertions(+), 56 deletions(-)
+
+diff --git a/src/main/java/dev/wolveringer/BungeeUtil/configuration/Configuration.java b/src/main/java/dev/wolveringer/BungeeUtil/configuration/Configuration.java
+index 23ed404..3a53bcb 100644
+--- a/src/main/java/dev/wolveringer/BungeeUtil/configuration/Configuration.java
++++ b/src/main/java/dev/wolveringer/BungeeUtil/configuration/Configuration.java
+@@ -1,116 +1,91 @@
+ package dev.wolveringer.BungeeUtil.configuration;
+ 
+-import java.io.File;
+-import java.io.IOException;
+-import java.util.List;
++import java.io.InputStreamReader;
+ 
+-import dev.wolveringer.BungeeUtil.AsyncCatcher.AsyncCatcherMode;
++import dev.wolveringer.BungeeUtil.AsyncCatcher;
+ import dev.wolveringer.BungeeUtil.BungeeUtil;
+ import dev.wolveringer.BungeeUtil.HandleErrorAction;
+ import dev.wolveringer.configuration.file.YamlConfiguration;
+-import dev.wolveringer.strings.Messages;
+ 
+ public class Configuration {
+-    private static YamlConfiguration conf;
+-    private static List<String> versionsFuture;
+ 
+-    public static YamlConfiguration getConfig() {
+-        return conf;
+-    }
++    // ProjectRetile Start
++
++    private static boolean timingsActive = false;
++    private static String latestVersion = "RetileBungeeUtil v1.0.0 - Upstream@WolverinDev";
+ 
+-    @SuppressWarnings("deprecation")
+-    public static void init() {
+-        conf = YamlConfiguration.loadConfiguration(new File(BungeeUtil.getPluginInstance().getDataFolder().getParentFile().getAbsolutePath() + "/BungeeUtil/" + Messages.getString("configuration.name")));
+-        conf.setDefaults(YamlConfiguration.loadConfiguration(Configuration.class.getResourceAsStream("/" + Messages.getString("configuration.name"))));
+-        conf.options().copyHeader(true);
+-        conf.options().copyDefaults(true);
+-        try {
+-            conf.save(new File(BungeeUtil.getPluginInstance().getDataFolder().getParentFile().getAbsolutePath() + "/BungeeUtil/" + Messages.getString("configuration.name")));
+-        } catch (IOException ex) {
+-            ex.printStackTrace();
+-        }
++    public static YamlConfiguration getConfig() {
++        return YamlConfiguration.loadConfiguration(new InputStreamReader(BungeeUtil.getPluginInstance().getResourceAsStream("config.properties")));
+     }
+ 
+     public static String getByteBuffType() {
+-        return conf.getString("byteBuffType");
++        return "direct";
+     }
+ 
+     public static boolean ramStatistics() {
+-        return conf.getBoolean("debug.ram-statistics");
++        return true;
+     }
+ 
+     public static boolean isTerminalColored() {
+-        return conf.getBoolean("terminal.colored");
++        return false;
+     }
+ 
+     public static boolean isTimingsActive() {
+-        return conf.getBoolean(Messages.getString("configuration.timings"));
++        return timingsActive;
+     }
+ 
+-    public static void setTimingsActive(boolean enabled) {
+-        conf.set(Messages.getString("configuration.timings"), enabled);
+-        try {
+-            conf.save(new File(BungeeUtil.getPluginInstance().getDataFolder().getParentFile().getAbsolutePath() + "/BungeeUtil/" + Messages.getString("configuration.name")));
+-        } catch (IOException ex) {
+-            ex.printStackTrace();
+-        }
++    public static void setTimingsActive(boolean timingsActive) {
++        Configuration.timingsActive = timingsActive;
+     }
+ 
+     public static int getLoadingBufferSize() {
+-        return conf.getInt("loading.inject.buffer-size");
++        return 65536;
+     }
+ 
+     public static boolean isFastBoot() {
+-        return conf.getBoolean("loading.fastboot");
++        return false;
+     }
+ 
+     public static boolean isUpdaterActive() {
+-        return conf.getBoolean(Messages.getString("configuration.updater"));
++        return false;
+     }
+ 
+     public static String getLastVersion() {
+-        return conf.getString("lastVersion");
++        return latestVersion;
+     }
+ 
+-    public static void setLastVersion(String oldVerstion) {
+-        if (oldVerstion == null) {
+-            conf.set("lastVersion", null);
+-        } else
+-            conf.set("lastVersion", oldVerstion);
+-        try {
+-            conf.save(new File(BungeeUtil.getPluginInstance().getDataFolder().getParentFile().getAbsolutePath() + "/BungeeUtil/" + Messages.getString("configuration.name")));
+-        } catch (IOException e) {
+-        }
++    public static void setLastVersion(String latest) {
++        Configuration.latestVersion = latest;
+     }
+ 
+-    public static AsyncCatcherMode getAsyncMode() {
+-        if (conf.getBoolean("async-catcher.enabled"))
+-            return AsyncCatcherMode.valueOf(conf.getString("async-catcher.mode"));
+-        else
+-            return AsyncCatcherMode.DISABLED;
++    public static AsyncCatcher.AsyncCatcherMode getAsyncMode() {
++        return AsyncCatcher.AsyncCatcherMode.WARNING;
+     }
+ 
+     public static boolean isGCEnabled() {
+-        return conf.getBoolean("system.gc.enabled");
++        return false;
+     }
+ 
+     public static boolean isDebugEnabled() {
+-        return conf.getBoolean("debug.messages");
++        return false;
+     }
+ 
+     public static boolean isSyncInventoryClickActive() {
+-        return conf.getBoolean("inventory.synchandle");
++        return true;
+     }
+ 
+     public static boolean isScoreboardhandleEnabled() {
+-        return conf.getBoolean("utils.scoreboard");
++        return false;
+     }
+ 
+     public static boolean isBossBarhandleEnabled() {
+-        return conf.getBoolean("utils.bossbar");
++        return false;
+     }
+ 
+     public static HandleErrorAction getHandleExceptionAction() {
+-        return HandleErrorAction.valueOf(conf.getString("network.exception"));
++        return HandleErrorAction.DISCONNECT;
+     }
++
++    // ProjectRetile End
++
+ }
+-- 
+1.9.4.msysgit.2
+
