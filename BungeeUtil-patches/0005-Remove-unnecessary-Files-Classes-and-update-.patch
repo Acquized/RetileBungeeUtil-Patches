@@ -1,0 +1,275 @@
+From e45c2ddcad26990db7597ee291b93421b3838d1b Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Wed, 5 Oct 2016 11:41:35 +0200
+Subject: [PATCH] [Feature] Remove unnecessary Files, Classes and update
+ Messages
+
+---
+ src/main/java/dev/wolveringer/BungeeUtil/Main.java | 55 -------------------
+ .../wolveringer/BungeeUtil/bukkit/BukkitMain.java  | 17 ------
+ .../java/dev/wolveringer/strings/Messages.java     | 61 ++++++++++++++++++++--
+ src/main/resources/bungee.yml                      |  4 --
+ src/main/resources/config.yml                      | 58 --------------------
+ src/main/resources/plugin.yml                      |  6 ---
+ 6 files changed, 56 insertions(+), 145 deletions(-)
+ delete mode 100644 src/main/java/dev/wolveringer/BungeeUtil/Main.java
+ delete mode 100644 src/main/java/dev/wolveringer/BungeeUtil/bukkit/BukkitMain.java
+ delete mode 100644 src/main/resources/bungee.yml
+ delete mode 100644 src/main/resources/config.yml
+ delete mode 100644 src/main/resources/plugin.yml
+
+diff --git a/src/main/java/dev/wolveringer/BungeeUtil/Main.java b/src/main/java/dev/wolveringer/BungeeUtil/Main.java
+deleted file mode 100644
+index fb25009..0000000
+--- a/src/main/java/dev/wolveringer/BungeeUtil/Main.java
++++ /dev/null
+@@ -1,55 +0,0 @@
+-package dev.wolveringer.BungeeUtil;
+-
+-import net.md_5.bungee.api.plugin.Plugin;
+-
+-import org.fusesource.jansi.AnsiConsole;
+-
+-import dev.wolveringer.BungeeUtil.packets.Packet;
+-
+-public class Main extends Plugin {
+-    private static Main main = null;
+-
+-    public static Main getMain() {
+-        return main;
+-    }
+-
+-    @Override
+-    public void onLoad() {
+-        main = this;
+-
+-    }
+-
+-    @Override
+-    public void onEnable() {
+-        main = this;
+-        if (BungeeUtil.getInstance() == null)
+-            BungeeUtil.createInstance(main);
+-        BungeeUtil.getInstance().sendMessage("Ansi consolen class: " + AnsiConsole.out.getClass());
+-        BungeeUtil.getInstance().setInformation("Check for updates");
+-
+-        // ProjectRetile Start
+-
+-        // Updater removed as unused
+-
+-        // ProjectRetile End
+-
+-        if (!BungeeUtil.getInstance().isInjected()) {
+-            switch (BungeeUtil.getInstance().inject()) {
+-                case 0:
+-                    System.exit(-1);
+-                    break;
+-                case -1:
+-                    break;
+-                default:
+-                    return;
+-            }
+-        }
+-        BungeeUtil.getInstance().load();
+-        Packet.listPackets();
+-    }
+-
+-    @Override
+-    public void onDisable() {
+-        BungeeUtil.getInstance().disable();
+-    }
+-}
+diff --git a/src/main/java/dev/wolveringer/BungeeUtil/bukkit/BukkitMain.java b/src/main/java/dev/wolveringer/BungeeUtil/bukkit/BukkitMain.java
+deleted file mode 100644
+index 16b7a18..0000000
+--- a/src/main/java/dev/wolveringer/BungeeUtil/bukkit/BukkitMain.java
++++ /dev/null
+@@ -1,17 +0,0 @@
+-package dev.wolveringer.BungeeUtil.bukkit;
+-
+-/*
+-import org.bukkit.Bukkit;
+-import org.bukkit.plugin.java.JavaPlugin;
+-
+-public class BukkitMain extends JavaPlugin{
+-	@Override
+-	public void onEnable() {
+-		Bukkit.getConsoleSender().sendMessage(""+dev.wolveringer.chat.ChatColor.ChatColorUtils.COLOR_CHAR+"7["+dev.wolveringer.chat.ChatColor.ChatColorUtils.COLOR_CHAR+"eBungeeUntil"+dev.wolveringer.chat.ChatColor.ChatColorUtils.COLOR_CHAR+"7] "+dev.wolveringer.chat.ChatColor.ChatColorUtils.COLOR_CHAR+"cBungeeUtil is only a plugin for the BungeeCord");
+-	}
+-
+-}
+-*/
+-public class BukkitMain {
+-
+-}
+\ No newline at end of file
+diff --git a/src/main/java/dev/wolveringer/strings/Messages.java b/src/main/java/dev/wolveringer/strings/Messages.java
+index 7a2452d..e59c3f5 100644
+--- a/src/main/java/dev/wolveringer/strings/Messages.java
++++ b/src/main/java/dev/wolveringer/strings/Messages.java
+@@ -1,9 +1,11 @@
+ package dev.wolveringer.strings;
+ 
+-import java.util.MissingResourceException;
+ import java.util.ResourceBundle;
+ 
++import static dev.wolveringer.chat.ChatColor.ChatColorUtils.COLOR_CHAR;
++
+ public class Messages {
++
+     private static final String BUNDLE_NAME = "Messages";
+ 
+     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+@@ -12,10 +14,59 @@ public class Messages {
+     }
+ 
+     public static String getString(String key) {
+-        try {
+-            return RESOURCE_BUNDLE.getString(key);
+-        } catch (MissingResourceException e) {
+-            return '!' + key + '!';
++        // ProjectRetile Start
++        switch (key) {
++            case "ChannelHandler.connection.bad-packet":
++                return "{0} - " + COLOR_CHAR + "cbad packet ID, are mods in use!?";
++            case "ChannelHandler.connection.connect":
++                return "{0} has " + COLOR_CHAR + "aconnected";
++            case "ChannelHandler.connection.disconnect":
++                return "{0} has " + COLOR_CHAR + "cdisconnected";
++            case "ChannelHandler.connection.encounteredException":
++                return "- " + COLOR_CHAR + "cencountered exception";
++            case "ChannelHandler.connection.IOException":
++                return "{0} - " + COLOR_CHAR + "cIOException: " + COLOR_CHAR + "e{1}";
++            case "ChannelHandler.connection.progressingException":
++                return COLOR_CHAR + "cexception processing exception";
++            case "ChannelHandler.connection.timeout":
++                return "{0} - " + COLOR_CHAR + "cread timed out";
++            case "network.timings.decoder.create.packet":
++                return "createPacket";
++            case "network.timings.decoder.handle":
++                return "Handle";
++            case "network.timings.decoder.handle.extern":
++                return "Handle Extern (Decoder)";
++            case "network.timings.decoder.handle.intern":
++                return "Handle Intern (Decoder)";
++            case "network.timings.decoder.read":
++                return "read";
++            case "network.timings.decoder.write.writeNewbyteBuff":
++                return "Write ByteBuff (Decoder)";
++            case "network.timings.encoder.write.writeNewbyteBuff":
++                return "Write ByteBuff (Encoder)";
++            case "network.timings.encoder.create.packet":
++                return "createPacket";
++            case "network.timings.encoder.definpacket.encript":
++                return "Definpacket Encode";
++            case "network.timings.encoder.handle":
++                return "Handle";
++            case "network.timings.encoder.handle.extern":
++                return "Handle Extern (Encoder)";
++            case "network.timings.encoder.handle.intern":
++                return "Handle Intern (Encoder)";
++            case "network.timings.encoder.packet.encript":
++                return "Packet Encrypt";
++            case "network.timings.encoder.write":
++                return "write";
++            case "configuration.name":
++                return "NaN";
++            case "configuration.timings":
++                return "timings";
++            case "configuration.updater":
++                return "NaN";
++            default:
++                return "Missing Key: " + key;
+         }
++        // ProjectRetile End
+     }
+ }
+diff --git a/src/main/resources/bungee.yml b/src/main/resources/bungee.yml
+deleted file mode 100644
+index dd59ce0..0000000
+--- a/src/main/resources/bungee.yml
++++ /dev/null
+@@ -1,4 +0,0 @@
+-name: BungeeUtil
+-main: dev.wolveringer.BungeeUtil.Main
+-version: 1.6.7.15
+-author: WolverinDEV
+diff --git a/src/main/resources/config.yml b/src/main/resources/config.yml
+deleted file mode 100644
+index cd52de7..0000000
+--- a/src/main/resources/config.yml
++++ /dev/null
+@@ -1,58 +0,0 @@
+-######################################## 
+-#              Timings:                # 
+-#         Loging timings on/off        # 
+-#                                      # 
+-#              Updater:                # 
+-#           Enable outo update         # 
+-#                                      # 
+-#             ByteBuffType:            # 
+-#  The Used Buffer type for Packets    # 
+-#              Avariable:              # 
+-#    - 'direct'                        # 
+-#    - 'heap'                          # 
+-#                                      # 
+-#               Terminal:              # 
+-#      Colors in terminal on/off       # 
+-#                                      # 
+-#            Async-Catcher:            # 
+-#  Enable it for more packet security  # 
+-#        The catcher has 2 modes:      # 
+-# - EXCEPTION (will throw a exception) # 
+-# - WARNING (will print a warn message)# 
+-#                                      #
+-#             Debug messages           #
+-#   Enable/Disable all debug messages  #  
+-#                                      # 
+-#               Utils:                 # 
+-#  Enable/Disable some unused feature  #  
+-#             to save ram              #  
+-#                                      # 
+-#                                      # 
+-#        Handle Exception Action:      # 
+-#        DISCONNECT, PRINT, NONE       #  
+-######################################## 
+-timings: true
+-updater: true
+-byteBuffType: direct
+-system.gc:
+-  enabled: false
+-  periode: 60000
+-terminal:
+-  colored: true
+-debug:
+-  ram-statistics: true
+-  messages: true
+-loading:
+-  inject:
+-    buffer-size: 65536
+-  fastboot: false
+-async-catcher:
+-  enabled: true
+-  mode: EXCEPTION
+-inventory:
+-  synchandle: true
+-utils:
+-  scoreboard: true
+-  bossbar: true
+-network:
+-  exception: DISCONNECT
+diff --git a/src/main/resources/plugin.yml b/src/main/resources/plugin.yml
+deleted file mode 100644
+index b49c030..0000000
+--- a/src/main/resources/plugin.yml
++++ /dev/null
+@@ -1,6 +0,0 @@
+-name: BungeeUtil
+-version: -1
+-main: dev.wolveringer.BungeeUtil.bukkit.BukkitMain
+-
+-commands:
+-  BungeeTimings:
+-- 
+1.9.4.msysgit.2
+
