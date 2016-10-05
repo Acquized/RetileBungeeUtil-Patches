@@ -1,0 +1,31 @@
+# Created by .ignore support plugin (hsz.mobi)
+
+### IntelliJ
+.idea
+*.iml
+out
+gen
+
+### Java
+*.class
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+### Gradle
+.gradle
+build/
+gradle-app.setting
+.gradletasknamecache
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+# Mac filesystem dust
+.DS_Store/
+
+# Linux temp files
+*~
