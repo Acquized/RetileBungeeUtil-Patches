@@ -29,3 +29,6 @@ gradle-app.setting
 
 # Linux temp files
 *~
+
+# Origin Project
+/BungeeUtil-upstream/
