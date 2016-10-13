@@ -1,0 +1,35 @@
+From e6aa77b93a27fec155808ca4518228baa39c67da Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Thu, 13 Oct 2016 12:36:24 +0200
+Subject: [PATCH] [Misc] Make Maven Publication possible
+
+---
+ build.gradle | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/build.gradle b/build.gradle
+index 7c2953f..c485761 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -69,6 +69,18 @@ dependencies {
+     testCompile group: 'junit', name: 'junit', version: '4.11'
+ }
+ 
++publishing {
++    publications {
++        maven(MavenPublication) {
++            groupId 'dev.wolveringer'
++            artifactId 'RetileBungeeUtil'
++            version '1.0.0-SNAPSHOT'
++
++            from components.java
++        }
++    }
++}
++
+ buildscript {
+     repositories {
+         jcenter()
+-- 
+1.9.4.msysgit.2
+
