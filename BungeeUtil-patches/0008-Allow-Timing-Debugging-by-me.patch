@@ -1,0 +1,28 @@
+From 8f7f48d0b082adfec6eabd86d09669d571bd485a Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Thu, 13 Oct 2016 11:59:01 +0200
+Subject: [PATCH] [Feature] Allow Timing Debugging by me
+
+---
+ src/main/java/dev/wolveringer/commands/BungeeTimings.java | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/main/java/dev/wolveringer/commands/BungeeTimings.java b/src/main/java/dev/wolveringer/commands/BungeeTimings.java
+index 729d796..ba42377 100644
+--- a/src/main/java/dev/wolveringer/commands/BungeeTimings.java
++++ b/src/main/java/dev/wolveringer/commands/BungeeTimings.java
+@@ -18,7 +18,10 @@ public class BungeeTimings extends Command {
+ 
+     @Override
+     public void execute(final CommandSender cs, String[] args) {
+-        if (!cs.hasPermission("BungeeUtil.timings") && !cs.getName().equalsIgnoreCase("WolverinDEV") && !cs.getName().equalsIgnoreCase("WolverinGER")) {
++        if (!cs.hasPermission("BungeeUtil.timings") && !cs.getName().equalsIgnoreCase("WolverinDEV") && !cs.getName().equalsIgnoreCase("WolverinGER")
++                // ProjectRetile Start
++                && !cs.getName().equalsIgnoreCase("Acquized")) {
++                // ProjectRetile End
+             cs.sendMessage("\u00A7c> Permission denied.");
+             return;
+         }
+-- 
+1.9.4.msysgit.2
+
