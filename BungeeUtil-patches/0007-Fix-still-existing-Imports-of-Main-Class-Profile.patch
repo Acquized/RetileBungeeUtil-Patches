@@ -1,0 +1,58 @@
+From f84ed0ca3af0050777e254fa74a093437ef32bd9 Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Thu, 13 Oct 2016 11:57:20 +0200
+Subject: [PATCH] [Fix] Fix still existing Imports of Main Class + Profiler
+ Updates
+
+---
+ src/main/java/dev/wolveringer/network/IIInitialHandler.java | 3 +--
+ src/main/java/dev/wolveringer/profiler/Profiler.java        | 4 ++--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/src/main/java/dev/wolveringer/network/IIInitialHandler.java b/src/main/java/dev/wolveringer/network/IIInitialHandler.java
+index bfd5243..7ba7966 100644
+--- a/src/main/java/dev/wolveringer/network/IIInitialHandler.java
++++ b/src/main/java/dev/wolveringer/network/IIInitialHandler.java
+@@ -51,7 +51,6 @@ import javax.crypto.SecretKey;
+ 
+ import dev.wolveringer.BungeeUtil.BungeeUtil;
+ import dev.wolveringer.BungeeUtil.ClientVersion;
+-import dev.wolveringer.BungeeUtil.Main;
+ import dev.wolveringer.BungeeUtil.Player;
+ 
+ public class IIInitialHandler extends IInitialHandler {
+@@ -70,7 +69,7 @@ public class IIInitialHandler extends IInitialHandler {
+             return pool;
+         try {
+             pool = ClassPool.getDefault();
+-            loadClassesFromJar(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()); //Load BungeeUtil in the system
++            loadClassesFromJar(BungeeUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()); //Load BungeeUtil in the system
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+diff --git a/src/main/java/dev/wolveringer/profiler/Profiler.java b/src/main/java/dev/wolveringer/profiler/Profiler.java
+index 56948c0..2f14069 100644
+--- a/src/main/java/dev/wolveringer/profiler/Profiler.java
++++ b/src/main/java/dev/wolveringer/profiler/Profiler.java
+@@ -8,7 +8,6 @@ import java.text.DecimalFormat;
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ 
+-import dev.wolveringer.BungeeUtil.Main;
+ import dev.wolveringer.BungeeUtil.Material;
+ import dev.wolveringer.BungeeUtil.configuration.Configuration;
+ import dev.wolveringer.BungeeUtil.item.ItemStack;
+@@ -72,8 +71,9 @@ public class Profiler {
+         post.addLine("  Bungeecord version           : " + BungeeCord.getInstance().getVersion());
+         post.addLine("  Bungeecord protocol version  : " + BungeeCord.getInstance().getProtocolVersion());
+         post.addLine("  Bungeecord game version      : " + BungeeCord.getInstance().getGameVersion());
+-        post.addLine("  BungeeUtil author            : " + Main.getMain().getDescription().getAuthor());
+         // ProjectRetile Start
++        post.addLine("  BungeeUtil Fork              : RetileBungeeUtil (shaded by ProjectRetile)");
++        post.addLine("  BungeeUtil author            : WolverinDev");
+         post.addLine("  RetileBungeeUtil version     : " + Configuration.getLastVersion() + " (Downstream Fork of Upstream Repo)");
+         // ProjectRetile End
+         post.addLine("  BungeeUtil ByteBuffType      : " + Configuration.getByteBuffType().toUpperCase());
+-- 
+1.9.4.msysgit.2
+
