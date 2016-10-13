@@ -1,0 +1,25 @@
+From 405b2c60a4403c9bd6e344067a76407fc35d3c59 Mon Sep 17 00:00:00 2001
+From: Acquized <flare.returns@outlook.com>
+Date: Thu, 13 Oct 2016 12:21:16 +0200
+Subject: [PATCH] [Misc] Add Maven Publish Plugin to Gradle for local Maven
+ repo pushing
+
+---
+ build.gradle | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/build.gradle b/build.gradle
+index a81bc98..7c2953f 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -2,6 +2,7 @@ apply plugin: 'java'
+ apply plugin: 'idea'
+ apply plugin: 'com.github.johnrengelman.shadow'
+ apply plugin: 'io.franzbecker.gradle-lombok'
++apply plugin: 'maven-publish'
+ 
+ println """
+ ***************************************
+-- 
+1.9.4.msysgit.2
+
